@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Server Master Guide - Frost Tech Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        frost: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                            950: '#082f49',
+                        },
+                        ice: '#f8fafc',
+                        darkslate: '#0f172a',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f8fafc;
+            color: #0f172a;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(14, 165, 233, 0.08) 0%, transparent 40%),
+                linear-gradient(to bottom, #ffffff, #f0f9ff, #e0f2fe);
+            background-attachment: fixed;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(186, 230, 253, 0.6);
+            box-shadow: 0 10px 30px -10px rgba(14, 165, 233, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+        }
+
+        .glass-card-hover {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .glass-card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 35px -10px rgba(56, 189, 248, 0.22), 0 0 15px rgba(56, 189, 248, 0.15);
+            border-color: rgba(56, 189, 248, 0.9);
+        }
+
+        .frost-gradient-text {
+            background: linear-gradient(135deg, #0284c7 0%, #38bdf8 50%, #0284c7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .frost-btn {
+            background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
+            box-shadow: 0 4px 14px 0 rgba(14, 165, 233, 0.35);
+            transition: all 0.25s ease;
+        }
+        .frost-btn:hover {
+            box-shadow: 0 6px 20px 0 rgba(14, 165, 233, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .code-block {
+            background: #09111e;
+            color: #e2e8f0;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #38bdf8;
+        }
+
+        .glow-effect {
+            position: relative;
+        }
+        .glow-effect::after {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, #38bdf8, #0284c7, #7dd3fc);
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .glow-effect:hover::after {
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 antialiased selection:bg-frost-200 selection:text-frost-900">
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-40 w-full backdrop-blur-md bg-white/75 border-b border-frost-200/80 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl frost-btn flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                    <i class="fa-solid font-mono fa-cubes"></i>
+                </div>
+                <div>
+                    <span class="font-extrabold text-xl tracking-tight text-slate-900">MC<span class="frost-gradient-text">FROST</span></span>
+                    <span class="hidden sm:inline-block text-xs px-2 py-0.5 ml-2 bg-frost-100 text-frost-700 font-semibold rounded-full border border-frost-200">v2.5 Guide</span>
+                </div>
+            </div>
+
+            <nav class="hidden md:flex items-center gap-1 lg:gap-2 text-sm font-semibold text-slate-600">
+                <a href="#quickstart" class="px-3 py-2 rounded-lg hover:text-frost-600 hover:bg-frost-50 transition">Quick Start</a>
+                <a href="#plugins" class="px-3 py-2 rounded-lg hover:text-frost-600 hover:bg-frost-50 transition">Plugins Library</a>
+                <a href="#hosting" class="px-3 py-2 rounded-lg hover:text-frost-600 hover:bg-frost-50 transition">Server Hosting</a>
+                <a href="#ai-assistant" class="px-3 py-2 rounded-lg hover:text-frost-600 hover:bg-frost-50 transition flex items-center gap-1.5 text-frost-600">
+                    <i class="fa-solid fa-wand-magic-sparkles text-frost-500"></i> AI Skript Generator
+                </a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <button onclick="openModal('quickstart-modal')" class="hidden sm:flex frost-btn text-white text-xs font-bold px-4 py-2.5 rounded-xl transition items-center gap-2">
+                    <i class="fa-solid fa-rocket"></i> Launch Checklist
+                </button>
+                <button onclick="toggleMobileNav()" class="md:hidden text-slate-600 hover:text-frost-600 p-2">
+                    <i class="fa-solid fa-bars text-xl" id="menu-icon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div id="mobile-nav" class="hidden md:hidden bg-white/95 border-b border-frost-200 px-4 py-3 space-y-2">
+            <a href="#quickstart" onclick="toggleMobileNav()" class="block px-3 py-2 rounded-lg text-slate-700 hover:bg-frost-50 font-medium">Quick Start</a>
+            <a href="#plugins" onclick="toggleMobileNav()" class="block px-3 py-2 rounded-lg text-slate-700 hover:bg-frost-50 font-medium">Plugins Library</a>
+            <a href="#hosting" onclick="toggleMobileNav()" class="block px-3 py-2 rounded-lg text-slate-700 hover:bg-frost-50 font-medium">Server Hosting</a>
+            <a href="#ai-assistant" onclick="toggleMobileNav()" class="block px-3 py-2 rounded-lg text-frost-600 font-semibold">AI Assistant</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-12 pb-16 md:pt-20 md:pb-24 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-frost-100/90 border border-frost-200 text-frost-800 text-xs font-semibold mb-6 shadow-sm">
+                    <span class="flex h-2 w-2 rounded-full bg-frost-500 animate-ping"></span>
+                    <span>Updated 2026 Engine Rules & Modifiers</span>
+                </div>
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-tight">
+                    Build & Master Your <span class="frost-gradient-text">Minecraft Server</span>
+                </h1>
+                <p class="mt-4 text-base sm:text-lg text-slate-600 font-normal leading-relaxed">
+                    The ultimate high-performance guide. Master essentials like <b>LuckPerms & AntiCheats</b>, or turn up the action with <b>Lifesteal, Strength SMP, String Dupers & Custom Mechanics</b>.
+                </p>
+
+                <!-- Search bar in Hero -->
+                <div class="mt-8 max-w-xl mx-auto relative">
+                    <div class="relative flex items-center">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 text-frost-400 text-lg"></i>
+                        <input type="text" id="hero-search" onkeyup="globalSearch(this.value)" placeholder="Search plugins (e.g. GrimAC, Lifesteal, StringDuper, LuckPerms)..." class="w-full pl-12 pr-28 py-3.5 bg-white border border-frost-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-frost-400 shadow-xl shadow-frost-100 transition">
+                        <button class="absolute right-2 frost-btn text-white px-4 py-2 rounded-xl text-xs font-bold">
+                            Search
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 text-left max-w-4xl mx-auto">
+                    <div class="glass-card p-4 rounded-2xl border border-frost-100">
+                        <div class="text-xs font-bold text-frost-600 uppercase tracking-wider">Main Plugins</div>
+                        <div class="text-2xl font-black text-slate-800 mt-1">11 Core</div>
+                        <div class="text-xs text-slate-500">Security & Core Admin</div>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl border border-frost-100">
+                        <div class="text-xs font-bold text-purple-600 uppercase tracking-wider">Secondary Plugins</div>
+                        <div class="text-2xl font-black text-slate-800 mt-1">12 Custom</div>
+                        <div class="text-xs text-slate-500">SMP, Lifesteal, Dupe</div>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl border border-frost-100">
+                        <div class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Top Hosts</div>
+                        <div class="text-2xl font-black text-slate-800 mt-1">12 Tested</div>
+                        <div class="text-xs text-slate-500">Paid & Free Options</div>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl border border-frost-100">
+                        <div class="text-xs font-bold text-sky-600 uppercase tracking-wider">AI Generator</div>
+                        <div class="text-2xl font-black text-slate-800 mt-1">Gemini 3</div>
+                        <div class="text-xs text-slate-500">Instant Skript & Configs</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Server Setup -->
+    <section id="quickstart" class="py-12 bg-white/60 border-y border-frost-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8">
+                <div>
+                    <span class="text-xs font-extrabold text-frost-600 uppercase tracking-widest">Step 1</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">Choose Server Engine Software</h2>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-500 mt-2 md:mt-0">Never use default Vanilla/CraftBukkit jar files for modern servers.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Paper -->
+                <div class="glass-card glass-card-hover p-6 rounded-2xl relative overflow-hidden">
+                    <div class="w-12 h-12 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center text-xl font-bold mb-4">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900">PaperMC</h3>
+                    <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 mt-1">Standard Recommended</span>
+                    <p class="text-sm text-slate-600 mt-3 leading-relaxed">
+                        The industry gold standard for modern Minecraft servers. Fixes exploits, drastically optimizes tick rates, and supports all Spigot plugins.
+                    </p>
+                    <div class="mt-5 pt-4 border-t border-frost-100 flex items-center justify-between text-xs font-semibold text-frost-700">
+                        <span>Best for: General SMP / Survival</span>
+                        <a href="https://papermc.io" target="_blank" class="hover:underline">papermc.io <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i></a>
+                    </div>
+                </div>
+
+                <!-- Purpur -->
+                <div class="glass-card glass-card-hover p-6 rounded-2xl relative overflow-hidden">
+                    <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-xl font-bold mb-4">
+                        <i class="fa-solid fa-feather-pointed"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900">Purpur</h3>
+                    <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-800 mt-1">High Gameplay Tweakability</span>
+                    <p class="text-sm text-slate-600 mt-3 leading-relaxed">
+                        Drop-in replacement for Paper with hundreds of extra configuration options (rideable mobs, string duper settings, custom gameplay values).
+                    </p>
+                    <div class="mt-5 pt-4 border-t border-frost-100 flex items-center justify-between text-xs font-semibold text-purple-700">
+                        <span>Best for: Custom SMP / Lifesteal</span>
+                        <a href="https://purpurmc.org" target="_blank" class="hover:underline">purpurmc.org <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i></a>
+                    </div>
+                </div>
+
+                <!-- Velocity -->
+                <div class="glass-card glass-card-hover p-6 rounded-2xl relative overflow-hidden">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl font-bold mb-4">
+                        <i class="fa-solid fa-network-wired"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900">Velocity Proxy</h3>
+                    <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-cyan-100 text-cyan-800 mt-1">Network Proxy</span>
+                    <p class="text-sm text-slate-600 mt-3 leading-relaxed">
+                        Next-generation Minecraft proxy engine. Connect multiple sub-servers (Lobby, Lifesteal, Practice, Anarchy) together seamlessly.
+                    </p>
+                    <div class="mt-5 pt-4 border-t border-frost-100 flex items-center justify-between text-xs font-semibold text-cyan-700">
+                        <span>Best for: Multi-Server Networks</span>
+                        <a href="https://papermc.io/software/velocity" target="_blank" class="hover:underline">papermc.io <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plugins Showcase -->
+    <section id="plugins" class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Header & Filter -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                <div>
+                    <span class="text-xs font-extrabold text-frost-600 uppercase tracking-widest">Step 2</span>
+                    <h2 class="text-3xl font-black text-slate-900 mt-1">Plugins Library</h2>
+                    <p class="text-sm text-slate-600 mt-1">Categorized into <b>Main Infrastructure</b> & <b>Secondary Custom SMP Gameplay</b> plugins.</p>
+                </div>
+
+                <!-- Filter Tabs -->
+                <div class="flex flex-wrap gap-2 p-1 bg-white border border-frost-200 rounded-2xl shadow-sm text-xs font-bold">
+                    <button onclick="filterPlugins('all')" id="btn-filter-all" class="plugin-tab-btn active px-4 py-2 rounded-xl bg-frost-600 text-white transition">All Plugins</button>
+                    <button onclick="filterPlugins('main')" id="btn-filter-main" class="plugin-tab-btn px-4 py-2 rounded-xl text-slate-600 hover:bg-frost-50 transition">Main / Essential</button>
+                    <button onclick="filterPlugins('secondary')" id="btn-filter-secondary" class="plugin-tab-btn px-4 py-2 rounded-xl text-slate-600 hover:bg-frost-50 transition">Secondary / Custom SMP</button>
+                    <button onclick="filterPlugins('pvp')" id="btn-filter-pvp" class="plugin-tab-btn px-4 py-2 rounded-xl text-slate-600 hover:bg-frost-50 transition">PvP & Lifesteal</button>
+                </div>
+            </div>
+
+            <!-- Plugin Cards Grid -->
+            <div id="plugin-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Plugin cards populated dynamically or rendered -->
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Generator Section -->
+    <section id="ai-assistant" class="py-16 bg-slate-900 text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Left Details -->
+                <div class="lg:col-span-5">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-frost-500/10 border border-frost-400/30 text-frost-300 text-xs font-semibold mb-4">
+                        <i class="fa-solid fa-sparkles"></i> Powered by Gemini 3 Flash
+                    </div>
+                    <h2 class="text-3xl font-extrabold tracking-tight sm:text-4xl">Instant Minecraft <span class="text-frost-400">Skript & Config</span> Writer</h2>
+                    <p class="mt-4 text-slate-300 text-sm leading-relaxed">
+                        Need custom mechanics like Lifesteal crafting rules, String duper toggles, Strength SMP multipliers, or custom TAB setups? Ask the embedded AI generator below!
+                    </p>
+
+                    <!-- Quick Prompt Chips -->
+                    <div class="mt-6 space-y-2">
+                        <div class="text-xs font-bold uppercase text-slate-400 tracking-wider">Quick Preset Prompts:</div>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="setPrompt('Write a Skript for a custom Lifesteal Heart recipe that drops a heart on player kill and lets players withdraw hearts using /withdraw.')" class="text-xs bg-slate-800 hover:bg-frost-600/40 hover:border-frost-400 border border-slate-700 text-slate-200 px-3 py-1.5 rounded-lg transition text-left">
+                                ❤️ Lifesteal Heart Skript
+                            </button>
+                            <button onclick="setPrompt('Create a Skript plugin for Strength SMP where killing a player boosts your strength effect level for 5 minutes.')" class="text-xs bg-slate-800 hover:bg-frost-600/40 hover:border-frost-400 border border-slate-700 text-slate-200 px-3 py-1.5 rounded-lg transition text-left">
+                                ⚔️ Strength SMP On-Kill Boost
+                            </button>
+                            <button onclick="setPrompt('Give me a string duper enabler Skript that allows tripwire string duping even onPaper 1.20+ servers.')" class="text-xs bg-slate-800 hover:bg-frost-600/40 hover:border-frost-400 border border-slate-700 text-slate-200 px-3 py-1.5 rounded-lg transition text-left">
+                                🧵 String Duper Toggle Skript
+                            </button>
+                            <button onclick="setPrompt('Write a modern TAB plugin header/footer config file layout with RGB gradient colors, ping, and TPS placeholders.')" class="text-xs bg-slate-800 hover:bg-frost-600/40 hover:border-frost-400 border border-slate-700 text-slate-200 px-3 py-1.5 rounded-lg transition text-left">
+                                📊 TAB Header/Footer Config
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Interactive Prompt Area -->
+                <div class="lg:col-span-7 glass-card bg-slate-950/80 border-slate-800 p-6 rounded-3xl text-slate-100 shadow-2xl">
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            <span class="text-xs font-mono text-slate-400 ml-2">skript_generator.sk</span>
+                        </div>
+                        <button onclick="copyAiOutput()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
+                            <i class="fa-regular fa-copy"></i> <span id="copy-text">Copy Code</span>
+                        </button>
+                    </div>
+
+                    <div class="mt-4">
+                        <textarea id="ai-prompt-input" rows="3" placeholder="Describe what you want (e.g. 'Create an Insta Restock chest plugin script for shop arenas')..." class="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-frost-500 resize-none font-sans"></textarea>
+                    </div>
+
+                    <div class="mt-3 flex justify-between items-center">
+                        <span class="text-xs text-slate-500">Generates ready-to-paste Skript/Config text</span>
+                        <button onclick="generateSkriptWithAI()" id="ai-generate-btn" class="frost-btn px-5 py-2.5 text-white font-bold text-xs rounded-xl flex items-center gap-2">
+                            <i class="fa-solid fa-bolt"></i> Generate Script
+                        </button>
+                    </div>
+
+                    <!-- Output Box -->
+                    <div class="mt-5">
+                        <pre id="ai-output-box" class="code-block p-4 rounded-xl text-xs font-mono overflow-x-auto max-h-72 min-h-[140px] leading-relaxed text-slate-300">
+# Select a prompt preset above or type custom instructions to generate Skript code!
+# Results will appear here instantly...
+                        </pre>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Hosting Section -->
+    <section id="hosting" class="py-16 bg-gradient-to-b from-frost-50/50 to-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-xs font-extrabold text-frost-600 uppercase tracking-widest">Step 3</span>
+                <h2 class="text-3xl font-black text-slate-900 mt-1">Minecraft Server Hosts Comparison</h2>
+                <p class="text-sm text-slate-600 mt-2">Tested for hardware performance, DDoS protection, panel ease of use, and overall value.</p>
+            </div>
+
+            <!-- Categories Tabs -->
+            <div class="flex justify-center mb-8">
+                <div class="inline-flex p-1.5 bg-white border border-frost-200 rounded-2xl shadow-sm gap-1 text-xs font-bold">
+                    <button onclick="switchHostTab('paid')" id="host-tab-paid" class="px-5 py-2 rounded-xl bg-frost-600 text-white transition">Paid Hosts (Top 5)</button>
+                    <button onclick="switchHostTab('free')" id="host-tab-free" class="px-5 py-2 rounded-xl text-slate-600 hover:bg-frost-50 transition">Free Hosts (Top 5)</button>
+                    <button onclick="switchHostTab('self')" id="host-tab-self" class="px-5 py-2 rounded-xl text-slate-600 hover:bg-frost-50 transition">Self-Hosting (VPS/Dedicated)</button>
+                </div>
+            </div>
+
+            <!-- Host Cards Container -->
+            <div id="host-cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamically rendered hosts -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg frost-btn flex items-center justify-center text-white font-bold text-sm">
+                    <i class="fa-solid fa-cubes"></i>
+                </div>
+                <span class="font-black text-lg text-white">MC<span class="frost-gradient-text">FROST</span></span>
+            </div>
+            <p class="text-xs text-slate-500 text-center">Not affiliated with Mojang AB or Microsoft. All trademarks belong to their respective owners.</p>
+            <div class="flex gap-4 text-sm text-slate-400">
+                <a href="#quickstart" class="hover:text-frost-400">Engine Setup</a>
+                <a href="#plugins" class="hover:text-frost-400">Plugins</a>
+                <a href="#hosting" class="hover:text-frost-400">Hosts</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL 1: Plugin Detail Modal Popup -->
+    <div id="plugin-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto">
+        <div class="glass-card bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative border border-frost-200 transform transition-all my-8">
+            <button onclick="closeModal('plugin-modal')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="flex items-center gap-4">
+                <div id="modal-plugin-icon" class="w-14 h-14 rounded-2xl bg-frost-100 text-frost-600 flex items-center justify-center text-2xl font-bold shadow-inner">
+                    <i class="fa-solid fa-plug"></i>
+                </div>
+                <div>
+                    <div id="modal-plugin-type" class="text-xs font-bold uppercase tracking-wider text-frost-600">Main Plugin</div>
+                    <h3 id="modal-plugin-title" class="text-2xl font-black text-slate-900">Plugin Name</h3>
+                </div>
+            </div>
+
+            <p id="modal-plugin-desc" class="mt-4 text-sm text-slate-600 leading-relaxed">
+                Detailed description of the plugin goes here...
+            </p>
+
+            <div class="mt-6 space-y-4">
+                <div>
+                    <h4 class="text-xs font-bold uppercase text-slate-500 tracking-wider mb-2">Why You Need It</h4>
+                    <div id="modal-plugin-why" class="bg-frost-50/80 border border-frost-100 p-3.5 rounded-xl text-xs text-slate-700 leading-relaxed">
+                        Reason details...
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold uppercase text-slate-500 tracking-wider mb-2">Quick Setup / Commands / Config Snippet</h4>
+                    <pre id="modal-plugin-config" class="code-block p-4 rounded-xl text-xs font-mono overflow-x-auto text-frost-300">
+# Configuration example snippet
+                    </pre>
+                </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                <span class="text-xs text-slate-400">100% Free & Open Source / Spigot Compatible</span>
+                <button onclick="closeModal('plugin-modal')" class="frost-btn text-white text-xs font-bold px-5 py-2.5 rounded-xl">
+                    Got It
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: Host Detail Modal Popup -->
+    <div id="host-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto">
+        <div class="glass-card bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative border border-frost-200 transform transition-all my-8">
+            <button onclick="closeModal('host-modal')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="flex items-center gap-4">
+                <div id="modal-host-icon" class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl font-bold">
+                    <i class="fa-solid fa-server"></i>
+                </div>
+                <div>
+                    <span id="modal-host-badge" class="text-xs font-bold uppercase px-2.5 py-0.5 bg-emerald-100 text-emerald-800 rounded-full">Paid Host</span>
+                    <h3 id="modal-host-title" class="text-2xl font-black text-slate-900 mt-1">Host Name</h3>
+                </div>
+            </div>
+
+            <p id="modal-host-desc" class="mt-4 text-sm text-slate-600 leading-relaxed">
+                Host information details...
+            </p>
+
+            <div class="mt-6 space-y-3">
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                    <div class="text-xs font-bold text-slate-500 uppercase">Recommended Server Flags (Aikar's Flags)</div>
+                    <code class="text-[10px] font-mono text-slate-800 block mt-1 break-all bg-white p-2 rounded border border-slate-200">
+                        -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC
+                    </code>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="p-3 bg-frost-50 rounded-xl border border-frost-100">
+                        <div class="text-[10px] font-bold text-frost-600 uppercase">Modpack / Plugin Panel</div>
+                        <div id="modal-host-panel" class="text-xs font-semibold text-slate-800 mt-0.5">Pterodactyl / Custom</div>
+                    </div>
+                    <div class="p-3 bg-frost-50 rounded-xl border border-frost-100">
+                        <div class="text-[10px] font-bold text-frost-600 uppercase">Hardware Spec</div>
+                        <div id="modal-host-cpu" class="text-xs font-semibold text-slate-800 mt-0.5">Ryzen 9 7950X / Intel i9</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                <span class="text-xs text-slate-500">Tested & Verified Setup</span>
+                <a id="modal-host-link" href="#" target="_blank" class="frost-btn text-white text-xs font-bold px-5 py-2.5 rounded-xl flex items-center gap-1.5">
+                    Visit Official Site <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: Launch Checklist Modal Popup -->
+    <div id="quickstart-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto">
+        <div class="glass-card bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative border border-frost-200 transform transition-all my-8">
+            <button onclick="closeModal('quickstart-modal')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h3 class="text-2xl font-black text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-list-check text-frost-500"></i> Server Launch Checklist
+            </h3>
+            <p class="text-xs text-slate-500 mt-1">Complete these steps in order for a lag-free 24/7 server launch.</p>
+
+            <div class="mt-5 space-y-3">
+                <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80 cursor-pointer hover:bg-frost-50 transition">
+                    <input type="checkbox" checked class="mt-0.5 rounded text-frost-600 focus:ring-frost-400">
+                    <div>
+                        <div class="text-xs font-bold text-slate-800">1. Install Java 21+ JDK</div>
+                        <div class="text-[11px] text-slate-500">Minecraft 1.20.4+ requires Java 21 to execute properly.</div>
+                    </div>
+                </label>
+                <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80 cursor-pointer hover:bg-frost-50 transition">
+                    <input type="checkbox" checked class="mt-0.5 rounded text-frost-600 focus:ring-frost-400">
+                    <div>
+                        <div class="text-xs font-bold text-slate-800">2. Pre-generate world using Chunky</div>
+                        <div class="text-[11px] text-slate-500">Run <code>/chunky radius 3000</code> then <code>/chunky start</code> to eliminate terrain generation lag!</div>
+                    </div>
+                </label>
+                <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80 cursor-pointer hover:bg-frost-50 transition">
+                    <input type="checkbox" class="mt-0.5 rounded text-frost-600 focus:ring-frost-400">
+                    <div>
+                        <div class="text-xs font-bold text-slate-800">3. Install GrimAC & LuckPerms</div>
+                        <div class="text-[11px] text-slate-500">Never launch open to public without anti-cheat and proper rank permissions.</div>
+                    </div>
+                </label>
+                <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/80 cursor-pointer hover:bg-frost-50 transition">
+                    <input type="checkbox" class="mt-0.5 rounded text-frost-600 focus:ring-frost-400">
+                    <div>
+                        <div class="text-xs font-bold text-slate-800">4. Set up Aikar's Java Flags</div>
+                        <div class="text-[11px] text-slate-500">Optimizes garbage collection to prevent lag spikes during high player counts.</div>
+                    </div>
+                </label>
+            </div>
+
+            <button onclick="closeModal('quickstart-modal')" class="w-full mt-6 frost-btn text-white text-xs font-bold py-3 rounded-xl">
+                I'm Ready to Launch!
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Data Structures for Plugins (Main Infrastructure vs Secondary / SMP Mechanics)
+        const PLUGINS = [
+            // MAIN / ESSENTIAL PLUGINS
+            {
+                id: 'grimac',
+                name: 'GrimAC / Vulcan',
+                category: 'main',
+                tags: ['main', 'security', 'anticheat'],
+                badge: 'Essential Security',
+                icon: 'fa-shield-halved',
+                iconBg: 'bg-red-100 text-red-600',
+                shortDesc: 'Modern predictive Anti-Cheat that prevents flying, speed hack, killaura, and inventory cheats.',
+                why: 'Prevents hackers from ruining your player economy and combat. GrimAC is free and completely open-source with 0 false positives.',
+                config: 'grimac.enable: true\nchecks:\n  killaura:\n    punishment: "ban %player% 7d Cheating"'
+            },
+            {
+                id: 'luckperms',
+                name: 'LuckPerms',
+                category: 'main',
+                tags: ['main', 'permissions', 'admin'],
+                badge: 'Essential Ranks',
+                icon: 'fa-key',
+                iconBg: 'bg-amber-100 text-amber-600',
+                shortDesc: 'The ultimate permissions management plugin with a web editor dashboard.',
+                why: 'Allows you to create ranks (VIP, Admin, Member) and grant specific command access without breaking security.',
+                config: '/lp editor (Opens web GUI to customize rank permissions easily)'
+            },
+            {
+                id: 'essentialsx',
+                name: 'EssentialsX',
+                category: 'main',
+                tags: ['main', 'core'],
+                badge: 'Essential Commands',
+                icon: 'fa-box-open',
+                iconBg: 'bg-sky-100 text-sky-600',
+                shortDesc: 'Over 130 core commands: /spawn, /warp, /home, /pay, kits, and economy core.',
+                why: 'Provides the fundamental suite of commands every player expects on a multiplayer Minecraft server.',
+                config: 'spawn-on-join: true\nteleport-cooldown: 3\nstarting-balance: 500'
+            },
+            {
+                id: 'vault',
+                name: 'Vault',
+                category: 'main',
+                tags: ['main', 'api'],
+                badge: 'Essential API',
+                icon: 'fa-vault',
+                iconBg: 'bg-slate-100 text-slate-700',
+                shortDesc: 'Ecosystem hook connecting your Economy, Permissions, and Chat plugins together.',
+                why: 'Without Vault installed, plugins like EssentialsX, ShopGUI, and LuckPerms cannot talk to each other.',
+                config: 'No configuration needed. Drag and drop into /plugins folder.'
+            },
+            {
+                id: 'tab',
+                name: 'TAB by NEZNAMY',
+                category: 'main',
+                tags: ['main', 'hud'],
+                badge: 'Essential Display',
+                icon: 'fa-list-ol',
+                iconBg: 'bg-indigo-100 text-indigo-600',
+                shortDesc: 'Custom tablist header, footer, bossbar, scoreboard, and nametag prefixes.',
+                why: 'Makes your server look high quality with clean player count display, ping counters, and rank colors.',
+                config: 'header:\n  - "&b&lMC FROST NETWORK"\n  - "&7Players: %server_online%"'
+            },
+            {
+                id: 'placeholderapi',
+                name: 'PlaceholderAPI (PAPI)',
+                category: 'main',
+                tags: ['main', 'api'],
+                badge: 'Essential API',
+                icon: 'fa-code',
+                iconBg: 'bg-purple-100 text-purple-600',
+                shortDesc: 'Placeholder system allowing plugins to share variables like %player_health% and %vault_eco_balance%.',
+                why: 'Required by TAB, DeluxeMenus, and Holograms to render live player stats.',
+                config: '/papi ecloud download Player\n/papi ecloud download Vault\n/papi reload'
+            },
+            {
+                id: 'chunky',
+                name: 'Chunky',
+                category: 'main',
+                tags: ['main', 'optimization'],
+                badge: 'Essential Performance',
+                icon: 'fa-globe',
+                iconBg: 'bg-emerald-100 text-emerald-600',
+                shortDesc: 'Pre-generates world chunks in the background so players experience zero terrain lag while flying or walking.',
+                why: 'Pre-generating a 5000x5000 world border stops CPU overload caused by new world generation.',
+                config: '/chunky radius 3000\n/chunky pattern square\n/chunky start'
+            },
+            {
+                id: 'spark',
+                name: 'Spark',
+                category: 'main',
+                tags: ['main', 'optimization'],
+                badge: 'Essential Profiler',
+                icon: 'fa-chart-line',
+                iconBg: 'bg-rose-100 text-rose-600',
+                shortDesc: 'Performance profiler tool that inspects CPU lag spikes and memory usage.',
+                why: 'If your server drops below 20 TPS, run Spark to identify exactly which plugin or mob is lagging your server.',
+                config: '/spark healthcheck\n/spark profiler --timeout 60'
+            },
+
+            // SECONDARY / CUSTOM SMP & GAMEPLAY PLUGINS
+            {
+                id: 'lifesteal',
+                name: 'LifestealZ / LifestealCore',
+                category: 'secondary',
+                tags: ['secondary', 'pvp', 'smp'],
+                badge: 'Secondary Gameplay',
+                icon: 'fa-heart-pulse',
+                iconBg: 'bg-red-100 text-red-600',
+                shortDesc: 'Lifesteal SMP mechanics: Eliminate players to steal their hearts. Craft extra hearts or revive dead teammates.',
+                why: 'Adds intense, high-stakes PvP survival combat. Ideal for content creation and competition.',
+                config: 'max-hearts: 20\nlose-heart-on-environment-death: false\nheart-item-recipe-enabled: true'
+            },
+            {
+                id: 'instarestock',
+                name: 'InstaRestock Chests',
+                category: 'secondary',
+                tags: ['secondary', 'smp', 'pvp'],
+                badge: 'Secondary Gameplay',
+                icon: 'fa-arrows-rotate',
+                iconBg: 'bg-cyan-100 text-cyan-600',
+                shortDesc: 'Instantly restocks loot chests in warzones, arenas, or dungeons at customizable time intervals.',
+                why: 'Keeps PvP warzones active with continuous loot drops without requiring admin restarts.',
+                config: 'chests:\n  warzone_1:\n    restock-delay: 300 # seconds\n    fill-mode: "RANDOM"'
+            },
+            {
+                id: 'stringduper',
+                name: 'String Duper / Dupe Enabler',
+                category: 'secondary',
+                tags: ['secondary', 'smp'],
+                badge: 'Secondary Gameplay',
+                icon: 'fa-lines-leaning',
+                iconBg: 'bg-amber-100 text-amber-600',
+                shortDesc: 'Re-enables tripwire string duplication and TNT dupers on modern Paper/Purpur 1.20+ servers.',
+                why: 'Essential for Anarchy or Semi-Vanilla SMP servers where players build massive automated farms.',
+                config: '# In purpur.yml\nblocks:\n  tripwire:\n    allow-duplication: true'
+            },
+            {
+                id: 'strengthsmp',
+                name: 'Strength SMP Mechanics',
+                category: 'secondary',
+                tags: ['secondary', 'pvp'],
+                badge: 'Secondary Gameplay',
+                icon: 'fa-hand-fist',
+                iconBg: 'bg-orange-100 text-orange-600',
+                shortDesc: 'Each kill grants players permanent or temporary Strength damage multipliers.',
+                why: 'Creates custom power scaling where top players become world bosses.',
+                config: 'strength-per-kill: 0.1\nmax-strength-multiplier: 2.5'
+            },
+            {
+                id: 'blisssmp',
+                name: 'Bliss SMP Mechanics',
+                category: 'secondary',
+                tags: ['secondary', 'smp'],
+                badge: 'Secondary Gameplay',
+                icon: 'fa-wand-magic-sparkles',
+                iconBg: 'bg-purple-100 text-purple-600',
+                shortDesc: 'Custom magic gems, elemental powers, and special abilities unlocked through quest progression.',
+                why: 'Gives players unique powers (flight, dash, shadow step) to enhance custom SMP battles.',
+                config: 'gems:\n  fire_gem:\n    ability: "FLAME_AURA"\n    cooldown: 15'
+            },
+            {
+                id: 'rankedpvp',
+                name: 'Ranked PvP / Duels',
+                category: 'secondary',
+                tags: ['secondary', 'pvp'],
+                badge: 'Secondary Gameplay',
+                icon: 'fa-swords',
+                iconBg: 'bg-blue-100 text-blue-600',
+                shortDesc: '1v1 and 2v2 practice duel arenas with Elo rankings, custom kits, and matchmaking queues.',
+                why: 'Allows players to practice combat risk-free in organized arenas.',
+                config: '/duels createarena nether_1\n/duels setkit nodebuff'
+            },
+            {
+                id: 'deluxemenus',
+                name: 'DeluxeMenus',
+                category: 'secondary',
+                tags: ['secondary', 'gui'],
+                badge: 'Secondary GUI',
+                icon: 'fa-window-restore',
+                iconBg: 'bg-teal-100 text-teal-600',
+                shortDesc: 'Build custom interactive inventory menus (/shop, /warps, /kits) with clickable icons.',
+                why: 'Turns raw command systems into beautiful visual GUIs.',
+                config: 'open_command: shop\nsize: 27\nitems:\n  1:\n    material: DIAMOND_SWORD\n    display_name: "&aPvP Shop"'
+            },
+            {
+                id: 'decentholograms',
+                name: 'FancyHolograms / DecentHolograms',
+                category: 'secondary',
+                tags: ['secondary', 'hud'],
+                badge: 'Secondary Display',
+                icon: 'fa-eye',
+                iconBg: 'bg-pink-100 text-pink-600',
+                shortDesc: 'Create floating 3D text and animated items in spawn areas.',
+                why: 'Displays server rules, top leaderboards, and welcoming messages to new players.',
+                config: '/dh create spawn_welcome &bWelcome to &lMC Frost!\n/dh line add spawn_welcome &7Type /menu to start'
+            }
+        ];
+
+        // Hosting Data (Paid, Free, Self)
+        const HOSTS = {
+            paid: [
+                { name: 'Apex Hosting', rating: '4.9/5', spec: 'Ryzen 9 7950X, NVMe', price: '$4.49/mo', desc: 'Industry benchmark with 1-click modpack installers and sub-30ms global latency.', link: 'https://apexminecrafthosting.com', icon: 'fa-crown', badge: 'Top Overall' },
+                { name: 'Bloom Host', rating: '4.9/5', spec: 'Dedicated Ryzen 9950X', price: '$10.00/mo', desc: 'Unmatched raw CPU speed designed specifically for heavy Paper/Purpur servers with high entity counts.', link: 'https://bloom.host', icon: 'fa-bolt', badge: 'Best Performance' },
+                { name: 'BisectHosting', rating: '4.8/5', spec: 'Intel i9 / Ryzen', price: '$3.00/mo', desc: 'Budget-friendly options with 20+ global server locations and 24/7 instant live support.', link: 'https://bisecthosting.com', icon: 'fa-shield', badge: 'Popular' },
+                { name: 'Gravel Host', rating: '4.7/5', spec: 'AMD EPYC / Ryzen', price: '$2.50/mo', desc: 'Ultra low-cost RAM plans with full Pterodactyl panel control and DDoS filtering.', link: 'https://gravelhost.com', icon: 'fa-gem', badge: 'Best Value' },
+                { name: 'Sparked Host', rating: '4.7/5', spec: 'Enterprise Hardware', price: '$2.00/mo', desc: 'Extremely affordable enterprise budget nodes perfect for small SMPs among friends.', link: 'https://sparkedhost.com', icon: 'fa-fire', badge: 'Budget Pick' }
+            ],
+            free: [
+                { name: 'Aternos', rating: '4.5/5', spec: 'Shared Cloud RAM', price: '100% Free', desc: 'The most popular free server host. Features simple custom domain setup and plugin installer.', link: 'https://aternos.org', icon: 'fa-gift', badge: 'Free #1' },
+                { name: 'Minehut', rating: '4.4/5', spec: 'Free Server Network', price: '100% Free', desc: 'Host free servers that appear directly inside the public Minehut network lobby.', link: 'https://minehut.com', icon: 'fa-network-wired', badge: 'Free Lobby' },
+                { name: 'Exaroton', rating: '4.8/5', spec: 'Pay-per-minute', price: 'Pennies / hour', desc: 'Only pay credits while the server is actively turned on and occupied by players.', link: 'https://exaroton.com', icon: 'fa-clock', badge: 'Pay As You Go' },
+                { name: 'Oracle Cloud Free Tier', rating: '4.9/5', spec: '4 Cores, 24GB RAM', price: '100% Free', desc: 'Requires technical Linux setup, but gives a dedicated 24GB RAM ARM server forever for free.', link: 'https://cloud.oracle.com', icon: 'fa-cloud', badge: '24GB Free Hardware' },
+                { name: 'FalixNodes', rating: '4.3/5', spec: 'Free Pterodactyl', price: '100% Free', desc: 'Provides full Pterodactyl panel access for free tier servers.', link: 'https://falixnodes.net', icon: 'fa-server', badge: 'Free Panel' }
+            ],
+            self: [
+                { name: 'Hetzner Dedicated', rating: '4.9/5', spec: 'Bare Metal i9/Ryzen', price: '~$45.00/mo', desc: 'Unbeatable raw hardware value for massive networks holding 200+ concurrent players.', link: 'https://hetzner.com', icon: 'fa-microchip', badge: 'Enterprise Bare Metal' },
+                { name: 'Contabo VPS', rating: '4.6/5', spec: '6 Cores, 16GB RAM', price: '~$12.00/mo', desc: 'Very cheap RAM per dollar for self-managed Linux sysadmins.', link: 'https://contabo.com', icon: 'fa-hard-drive', badge: 'High Storage VPS' }
+            ]
+        };
+
+        // Render Plugins
+        function renderPlugins(categoryFilter = 'all') {
+            const container = document.getElementById('plugin-grid');
+            container.innerHTML = '';
+
+            const filtered = PLUGINS.filter(p => {
+                if (categoryFilter === 'all') return true;
+                if (categoryFilter === 'pvp') return p.tags.includes('pvp') || p.tags.includes('smp');
+                return p.category === categoryFilter;
+            });
+
+            filtered.forEach(plugin => {
+                const isMain = plugin.category === 'main';
+                const card = document.createElement('div');
+                card.className = 'glass-card glass-card-hover p-6 rounded-2xl flex flex-col justify-between relative cursor-pointer';
+                card.onclick = () => openPluginModal(plugin.id);
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full ${isMain ? 'bg-frost-100 text-frost-800 border border-frost-200' : 'bg-purple-100 text-purple-800 border border-purple-200'}">
+                                ${plugin.badge}
+                            </span>
+                            <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                        </div>
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 rounded-xl ${plugin.iconBg} flex items-center justify-center text-lg font-bold">
+                                <i class="fa-solid ${plugin.icon}"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-900">${plugin.name}</h3>
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            ${plugin.shortDesc}
+                        </p>
+                    </div>
+                    <div class="mt-5 pt-3 border-t border-frost-100 flex items-center justify-between text-xs font-semibold text-frost-600">
+                        <span>Click for Config & Setup</span>
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Filter plugin category buttons
+        function filterPlugins(cat) {
+            document.querySelectorAll('.plugin-tab-btn').forEach(btn => {
+                btn.classList.remove('bg-frost-600', 'text-white');
+                btn.classList.add('text-slate-600');
+            });
+            const activeBtn = document.getElementById(`btn-filter-${cat}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-frost-600', 'text-white');
+                activeBtn.classList.remove('text-slate-600');
+            }
+            renderPlugins(cat);
+        }
+
+        // Global search filter
+        function globalSearch(query) {
+            const q = query.toLowerCase();
+            const container = document.getElementById('plugin-grid');
+            const cards = container.children;
+
+            PLUGINS.forEach((plugin, index) => {
+                const match = plugin.name.toLowerCase().includes(q) || 
+                              plugin.shortDesc.toLowerCase().includes(q) || 
+                              plugin.tags.some(t => t.includes(q));
+                if (cards[index]) {
+                    cards[index].style.display = match ? 'flex' : 'none';
+                }
+            });
+        }
+
+        // Open Plugin Detail Modal
+        function openPluginModal(pluginId) {
+            const plugin = PLUGINS.find(p => p.id === pluginId);
+            if (!plugin) return;
+
+            document.getElementById('modal-plugin-title').innerText = plugin.name;
+            document.getElementById('modal-plugin-type').innerText = plugin.badge;
+            document.getElementById('modal-plugin-desc').innerText = plugin.shortDesc;
+            document.getElementById('modal-plugin-why').innerText = plugin.why;
+            document.getElementById('modal-plugin-config').innerText = plugin.config;
+            
+            const iconBox = document.getElementById('modal-plugin-icon');
+            iconBox.className = `w-14 h-14 rounded-2xl flex items-center justify-center text-2xl font-bold ${plugin.iconBg}`;
+            iconBox.innerHTML = `<i class="fa-solid ${plugin.icon}"></i>`;
+
+            openModal('plugin-modal');
+        }
+
+        // Render Hosts
+        function renderHosts(type = 'paid') {
+            const container = document.getElementById('host-cards-container');
+            container.innerHTML = '';
+
+            const list = HOSTS[type] || HOSTS.paid;
+            list.forEach(host => {
+                const card = document.createElement('div');
+                card.className = 'glass-card glass-card-hover p-6 rounded-2xl flex flex-col justify-between cursor-pointer';
+                card.onclick = () => openHostModal(host);
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                                ${host.badge}
+                            </span>
+                            <span class="text-xs font-bold text-amber-500"><i class="fa-solid fa-star"></i> ${host.rating}</span>
+                        </div>
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-10 h-10 rounded-xl bg-frost-100 text-frost-600 flex items-center justify-center text-lg">
+                                <i class="fa-solid ${host.icon}"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-extrabold text-slate-900">${host.name}</h3>
+                                <div class="text-xs text-frost-600 font-bold">${host.price}</div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">${host.desc}</p>
+                    </div>
+                    <div class="mt-5 pt-3 border-t border-frost-100 flex items-center justify-between text-xs font-bold text-frost-700">
+                        <span>Hardware: ${host.spec}</span>
+                        <i class="fa-solid fa-circle-info"></i>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function switchHostTab(tab) {
+            ['paid', 'free', 'self'].forEach(t => {
+                const btn = document.getElementById(`host-tab-${t}`);
+                if (btn) {
+                    btn.classList.remove('bg-frost-600', 'text-white');
+                    btn.classList.add('text-slate-600');
+                }
+            });
+            const activeBtn = document.getElementById(`host-tab-${tab}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-frost-600', 'text-white');
+                activeBtn.classList.remove('text-slate-600');
+            }
+            renderHosts(tab);
+        }
+
+        // Open Host Detail Modal
+        function openHostModal(host) {
+            document.getElementById('modal-host-title').innerText = host.name;
+            document.getElementById('modal-host-badge').innerText = host.badge;
+            document.getElementById('modal-host-desc').innerText = host.desc;
+            document.getElementById('modal-host-cpu').innerText = host.spec;
+            document.getElementById('modal-host-link').href = host.link;
+            openModal('host-modal');
+        }
+
+        // Modal Helpers
+        function openModal(id) {
+            document.getElementById(id)?.classList.remove('hidden');
+        }
+        function closeModal(id) {
+            document.getElementById(id)?.classList.add('hidden');
+        }
+
+        // Mobile Nav Toggle
+        function toggleMobileNav() {
+            const nav = document.getElementById('mobile-nav');
+            nav.classList.toggle('hidden');
+        }
+
+        // AI Assistant Prompt Preset Setter
+        function setPrompt(text) {
+            document.getElementById('ai-prompt-input').value = text;
+        }
+
+        // GEMINI API Call Function
+        async function generateSkriptWithAI() {
+            const promptInput = document.getElementById('ai-prompt-input').value.trim();
+            const outputBox = document.getElementById('ai-output-box');
+            const btn = document.getElementById('ai-generate-btn');
+
+            if (!promptInput) {
+                outputBox.innerText = '# Please enter a prompt first!';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Generating...';
+            outputBox.innerText = '# Contacting Gemini AI engine... Please wait...';
+
+            const systemPrompt = "You are an expert Minecraft Bukkit/Paper Skript developer and server administrator. Generate well-commented, robust, lag-free Skript code or plugin configuration files based on the user request. Provide ONLY the code/script block with clear comments.";
+            const apiKey = ""; // Canvas runtime populates this key automatically
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: promptInput }] }],
+                        systemInstruction: { parts: [{ text: systemPrompt }] }
+                    })
+                });
+
+                const data = await response.json();
+                const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (generatedText) {
+                    outputBox.innerText = generatedText;
+                } else {
+                    outputBox.innerText = '# Error: Could not parse response from Gemini API.';
+                }
+            } catch (err) {
+                outputBox.innerText = `# API Request Failed: ${err.message}\n# Please try again.`;
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-bolt"></i> Generate Script';
+            }
+        }
+
+        // Copy AI Output to Clipboard
+        function copyAiOutput() {
+            const text = document.getElementById('ai-output-box').innerText;
+            const copyBtnText = document.getElementById('copy-text');
+
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = text;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+
+            copyBtnText.innerText = 'Copied!';
+            setTimeout(() => { copyBtnText.innerText = 'Copy Code'; }, 2000);
+        }
+
+        // Initial Load Initialization
+        window.onload = function() {
+            renderPlugins('all');
+            renderHosts('paid');
+        };
+    </script>
+</body>
+</html>
