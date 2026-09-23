@@ -541,7 +541,7 @@
       alert('Code copied to clipboard!');
     }
 
-    // AI Generator Function - Guaranteed Working Fix
+    // AI Generator Function
     async function generateScript() {
       const promptText = document.getElementById('ai-prompt').value.trim();
       const apiKey = document.getElementById('gemini-key').value.trim();
@@ -554,7 +554,6 @@
 
       outputBox.textContent = "# Generating script...";
 
-      // Smart Fallback Parser (Ensures NO parse error ever displays)
       function getFallbackScript(input) {
         const query = input.toLowerCase();
         if (query.includes('lifesteal') || query.includes('heart')) {
